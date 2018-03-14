@@ -1,0 +1,13 @@
+//#pragma once // Not supported in glslangValidator (1.0.65.1) and ignored without warning.
+
+#ifndef SHUFFLE_OP_HELPERS_GLSLI_INCLUDED
+#define SHUFFLE_OP_HELPERS_GLSLI_INCLUDED
+
+// readInvocationARB() are equivalent to CUDA __shfl() intrinsic.
+// Shuffle operations are not supported by ARB extension. In Vulkan 1.1, those are supported by KHR extension.
+// https://www.khronos.org/blog/vulkan-subgroup-tutorial
+
+#define SHUFFLE_XOR_EX(x, laneMask, laneCount) readInvocationARB((x), (gl_SubGroupInvocationARB ^ (laneMask)) & ((laneCount) - 1))
+#define SHUFFLE_XOR(x, laneMask) SHUFFLE_XOR_EX((x), (laneMask), gl_SubGroupSizeARB)
+
+#endif

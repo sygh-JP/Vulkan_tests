@@ -1,0 +1,71 @@
+#version 450
+
+//#extension GL_ARB_shading_language_include: enable // Not supported in glslangValidator (1.0.65.1).
+#extension GL_GOOGLE_include_directive : enable // Supported in glslangValidator (1.0.65.1) and disabled by default in GLSL mode.
+
+// Test of sub-group and invocation concepts in Vulkan, equivalent to wave and lane respectively in HLSL.
+// http://32ipi028l5q82yhj72224m8j.wpengine.netdna-cdn.com/wp-content/uploads/2017/07/GDC2017-Wave-Programming-D3D12-Vulkan.pdf
+// See also CUDA warp shuffle and OpenCL cl_khr_subgroups (extension in CL 2.0 and core in CL 2.1).
+// https://devblogs.nvidia.com/faster-parallel-reductions-kepler/
+// https://www.khronos.org/registry/OpenCL/sdk/2.0/docs/man/xhtml/cl_khr_subgroups.html
+
+#extension GL_ARB_gpu_shader_int64 : enable
+#extension GL_ARB_shader_ballot : enable
+//#extension GL_ARB_shader_group_vote : enable
+
+//#extension GL_ARB_compute_variable_group_size : enable // Unfortunately not supported in Vulkan.
+// https://forums.khronos.org/showthread.php/13530-Does-Vulkan-support-variable-sized-layouts
+
+#include "shuffle_op_helpers.glsli"
+
+layout(std430, binding = 0) readonly buffer MyStorageBufferIn
+{
+	float data[];
+} g_ssboIn;
+
+layout(std430, binding = 1) buffer MyStorageBufferOut
+{
+	float data[];
+} g_ssboOut;
+
+// Mmm... I wish GLSL should support more C++ features like templates...
+
+float simdAllReduceSum(float val)
+{
+	for (uint mask = gl_SubGroupSizeARB / 2; mask > 0; mask /= 2)
+	{
+		val += SHUFFLE_XOR(val, mask);
+	}
+	return val;
+}
+
+int simdAllReduceSum(int val)
+{
+	for (uint mask = gl_SubGroupSizeARB / 2; mask > 0; mask /= 2)
+	{
+		val += SHUFFLE_XOR(val, mask);
+	}
+	return val;
+}
+
+//layout (local_size_x = 16, local_size_y = 16) in;
+layout (local_size_x = 256, local_size_y = 1) in;
+void main()
+{
+	ivec2 storePos = ivec2(gl_GlobalInvocationID.xy);
+
+	uint laneCount = gl_SubGroupSizeARB;
+	uint laneIndex = gl_SubGroupInvocationARB;
+
+	uint width = gl_NumWorkGroups.x * gl_WorkGroupSize.x;
+	uint height = gl_NumWorkGroups.y * gl_WorkGroupSize.y;
+	uint index = width * storePos.y + storePos.x;
+
+	float inVal = g_ssboIn.data[index];
+
+	//g_ssboOut.data[index] = inVal * 2;
+	//g_ssboOut.data[index] = float(laneCount);
+	//g_ssboOut.data[index] = float(laneIndex);
+
+	g_ssboOut.data[index] = simdAllReduceSum(inVal);
+}
