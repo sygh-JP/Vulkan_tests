@@ -20,6 +20,10 @@
 *.iobj
 *.aps
 *.zip
+/MyMfcSimpleVkTest1/.vs
+/MyMfcSimpleVkTest1/ipch
+/MyMfcSimpleVkTest1/Win32
+/MyMfcSimpleVkTest1/x64
 /MyVkComputeTest1/.vs
 /MyVkComputeTest1/ipch
 /MyVkComputeTest1/Win32
