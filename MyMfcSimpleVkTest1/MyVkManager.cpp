@@ -654,7 +654,7 @@ void MyVkManager::Init(HWND hWnd, UINT width, UINT height)
 			m_vkVertexShader2 = CreateMyVkShaderModuleUniqueFromFile(m_vkDevice.get(), L"vsSimple2.spv");
 		}
 
-		// Direct3D 12 では Descripter Heap が最難関だったが、Vulkan でも同様らしい。Descripter Set まわりの理解が難しい。
+		// Direct3D 12 では Descriptor Heap が最難関だったが、Vulkan でも同様らしい。Descriptor Pool & Set まわりの理解が難しい。
 		{
 			vk::DescriptorPoolSize descPoolSize;
 			descPoolSize.type = vk::DescriptorType::eUniformBuffer;

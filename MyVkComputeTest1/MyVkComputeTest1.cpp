@@ -241,7 +241,7 @@ int main()
 				}
 				return found;
 			};
-			// NVIDIA GeForce GTX 770 の場合、キューは2個ある模様。
+			// NVIDIA GeForce GTX 770 の場合、Queue Family Index は2つある模様。2種類のキューがあるということ？
 			// 1個目はすべてのフラグを持っているが、2個目は Transfer のみらしい。
 			// 今回は Graphics は使わないので、Compute だけチェックする。
 			if (!searchQFI(vk::QueueFlagBits::eCompute))

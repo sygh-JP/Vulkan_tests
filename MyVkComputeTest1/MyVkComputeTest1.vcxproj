@@ -176,14 +176,14 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)VkShaders\%(Identity).spv</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(OutDir)VkShaders\%(Identity).spv</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(OutDir)VkShaders\%(Identity).spv</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">echo Now compiling GLSL source file to SPIR-V...
-"$(VK_SDK_PATH)\Bin32\glslangValidator.exe" -e main -V "%(Identity)" -o "$(OutDir)VkShaders\%(Identity).spv"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">echo Now compiling GLSL source file to SPIR-V...
-"$(VK_SDK_PATH)\Bin32\glslangValidator.exe" -e main -V "%(Identity)" -o "$(OutDir)VkShaders\%(Identity).spv"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">echo Now compiling GLSL source file to SPIR-V...
-"$(VK_SDK_PATH)\Bin32\glslangValidator.exe" -e main -V "%(Identity)" -o "$(OutDir)VkShaders\%(Identity).spv"</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">echo Now compiling GLSL source file to SPIR-V...
-"$(VK_SDK_PATH)\Bin32\glslangValidator.exe" -e main -V "%(Identity)" -o "$(OutDir)VkShaders\%(Identity).spv"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(VK_SDK_PATH)\Bin32\glslangValidator.exe" -e main -V "%(Identity)" -o "$(OutDir)VkShaders\%(Identity).spv"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(VK_SDK_PATH)\Bin32\glslangValidator.exe" -e main -V "%(Identity)" -o "$(OutDir)VkShaders\%(Identity).spv"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">"$(VK_SDK_PATH)\Bin32\glslangValidator.exe" -e main -V "%(Identity)" -o "$(OutDir)VkShaders\%(Identity).spv"</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">"$(VK_SDK_PATH)\Bin32\glslangValidator.exe" -e main -V "%(Identity)" -o "$(OutDir)VkShaders\%(Identity).spv"</Command>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Now compiling GLSL source file to SPIR-V...</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Now compiling GLSL source file to SPIR-V...</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Now compiling GLSL source file to SPIR-V...</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Now compiling GLSL source file to SPIR-V...</Message>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
