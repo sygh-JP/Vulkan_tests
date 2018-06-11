@@ -233,14 +233,16 @@ void CMyMfcSimpleVkTest1Dlg::OnTimer(UINT_PTR nIDEvent)
 		m_vkManager->SetRotAngle(vRotAngle);
 		m_vkManager->SetDrawsBlendingObjects(m_ddxcCheckDrawBlendingObjects.GetCheck() != BST_UNCHECKED);
 
-#if 1
-		this->Invalidate();
+#if 0
+		this->Invalidate(false);
 #else
-		// WS_CLIPCHILDREN を指定しないと、たとえ以下の方法でもちらつく。
+		// Direct3D ではターゲットとなるピクチャコントロールの背景の消去有無にかかわらずちらつきが発生しないが、
+		// Vulkan の場合は背景を消去するとちらつく。
+		// 回避方法のひとつとして、親ダイアログに WS_CLIPCHILDREN を指定する方法があるが、グループボックスと共存できないので却下。
 		CRect pictureRect;
 		m_ddxcStaticPict1.GetWindowRect(pictureRect);
 		this->ScreenToClient(pictureRect);
-		this->InvalidateRect(pictureRect);
+		this->InvalidateRect(pictureRect, false);
 #endif
 	}
 
